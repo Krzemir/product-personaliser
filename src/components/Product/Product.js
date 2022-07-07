@@ -1,25 +1,32 @@
 import styles from './Product.module.scss';
 
-//import PropTypes from 'prop-types';
 import { useState } from 'react';
 import ProductImage from '../ProductImage/ProductImage';
 import ProductForm from '../ProductForm/ProductForm';
+import { useMemo } from 'react';
 
 const Product = (props) => {
-  console.log(props);
   const [currentColor, setCurrentColor] = useState(props.colors[0]);
   const [currentSize, setCurrentSize] = useState(props.sizes[0].name);
   const [currentAdditionalPrice, setCurrentAdditionalPrice] = useState(props.sizes[0].additionalPrice);
-  const [currentPrice, setCurrentPrice] = useState(props.basePrice);
+  //const [currentPrice, setCurrentPrice] = useState(props.basePrice);
 
   let fullProductName = '';
 
   const changeSize = (sizeName, additionalPrice) => {
     setCurrentSize(sizeName);
     setCurrentAdditionalPrice(additionalPrice);
-    const newPrice = props.basePrice + currentAdditionalPrice;
-    setCurrentPrice(newPrice);
+    // const newPrice = props.basePrice + currentAdditionalPrice;
+    //setCurrentPrice(newPrice);
   };
+
+  const getPrice = () => {
+    return props.basePrice + currentAdditionalPrice;
+  };
+
+  /*   const getPrice = useMemo(() => {
+    return props.basePrice + currentAdditionalPrice;
+  }, [currentAdditionalPrice]); */
 
   const changeColor = (color) => {
     setCurrentColor(color);
@@ -40,7 +47,7 @@ const Product = (props) => {
     console.log(`Summary 
     =============== 
     Name: ${fullProductName}
-    Price: ${currentPrice}
+    Price: ${getPrice()}
     Color: ${currentColor}
     Size: ${currentSize}`);
   };
@@ -49,49 +56,16 @@ const Product = (props) => {
     <article className={styles.product}>
       <ProductImage currentColor={currentColor} fullProductName={fullProductName} name={props.name} changeColor={changeColor} colors={props.colors} />
 
-      {/*       <div className={styles.imageContainer}>
-        <img className={styles.image} alt={formatName(props.name)} src={`${process.env.PUBLIC_URL}/images/products/shirt-${props.name}--${currentColor}.jpg`} />
-      </div> */}
       <div>
         <header>
           <h2 className={styles.name}>{formatName(props.name)}</h2>
-          <span className={styles.price}>Price: {currentPrice} $</span>
+          <span className={styles.price}>Price: {getPrice()} $</span>
         </header>
 
         <ProductForm getBasketData={getBasketData} currentSize={currentSize} changeSize={changeSize} sizes={props.sizes} colors={props.colors} changeColor={changeColor} currentColor={currentColor} />
-
-        {/*         <form onSubmit={getBasketData}>
-          <div className={styles.sizes}>
-            <h3 className={styles.optionLabel}>Sizes</h3>
-            <ul className={styles.choices}>
-              {props.sizes.map((size) => (
-                <li key={size.name}>
-                  <button type="button" className={size.name === currentSize ? styles.active : undefined} onClick={() => changeSize(size.name, size.additionalPrice)}>
-                    {size.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={styles.colors}>
-            <h3 className={styles.optionLabel}>Colors</h3>
-            <ul className={styles.choices}>
-              {props.colors.map((color) => (
-                <li key={color}>
-                  <button type="button" className={clsx(styles['color' + color.charAt(0).toUpperCase() + color.slice(1)], color === currentColor && styles.active)} onClick={() => changeColor(color)} />
-                </li>
-              ))}
-            </ul>
-          </div>
-          <Button type="submit" className={styles.button}>
-            <span className="fa fa-shopping-cart" />
-          </Button>
-        </form> */}
       </div>
     </article>
   );
 };
-
-//Product.propTypes = { products: PropTypes.object.isRequired };
 
 export default Product;
