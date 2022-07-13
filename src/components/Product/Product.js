@@ -20,13 +20,13 @@ const Product = (props) => {
     //setCurrentPrice(newPrice);
   };
 
-  const getPrice = () => {
+ /*  const getPrice = () => {
     return props.basePrice + currentAdditionalPrice;
-  };
+  }; */
 
-  /*   const getPrice = useMemo(() => {
+const getPrice = useMemo(() => {
     return props.basePrice + currentAdditionalPrice;
-  }, [currentAdditionalPrice]); */
+  }, [currentAdditionalPrice]); 
 
   const changeColor = (color) => {
     setCurrentColor(color);
@@ -47,7 +47,7 @@ const Product = (props) => {
     console.log(`Summary 
     =============== 
     Name: ${fullProductName}
-    Price: ${getPrice()}
+    Price: ${getPrice}
     Color: ${currentColor}
     Size: ${currentSize}`);
   };
@@ -59,7 +59,7 @@ const Product = (props) => {
       <div>
         <header>
           <h2 className={styles.name}>{formatName(props.name)}</h2>
-          <span className={styles.price}>Price: {getPrice()} $</span>
+          <span className={styles.price}>Price: {getPrice} $</span>
         </header>
 
         <ProductForm getBasketData={getBasketData} currentSize={currentSize} changeSize={changeSize} sizes={props.sizes} colors={props.colors} changeColor={changeColor} currentColor={currentColor} />
